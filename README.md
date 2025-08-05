@@ -147,7 +147,7 @@ The app supports multiple AI providers for generating Shopify app scaffolds:
 - **Best for**: Cost-effective cloud AI, European data residency
 
 ### **Provider Selection**
-Set `REACT_APP_LLM_PROVIDER=openai|ollama|mistral` in your `.env` file to choose your preferred provider. **Ollama is the default for development.**
+The `.env.example` file is pre-configured with Ollama as the default provider. You can modify the `.env` file to use other providers if needed.
 
 ## 🎯 Usage
 
