@@ -46,7 +46,7 @@ A powerful web application that allows developers to generate custom Shopify app
 
 3. **Set up environment variables**
    ```bash
-   cp env.example .env
+   cp .env.example .env
    ```
    The `.env` file is pre-configured for development with Ollama. No additional configuration needed!
 
