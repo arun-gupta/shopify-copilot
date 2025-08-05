@@ -68,9 +68,9 @@ function App() {
                             ShopifyGPT
                           </h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-500">Powered by GPT-4</span>
-            </div>
+                                    <div className="flex items-center space-x-4">
+                          <span className="text-sm text-gray-500">Powered by AI</span>
+                        </div>
           </div>
         </div>
       </header>
