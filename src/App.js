@@ -35,8 +35,12 @@ function App() {
     const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
 
+    // Create a folder for the app
+    const appFolderName = 'shopify-app';
+    const appFolder = zip.folder(appFolderName);
+
     Object.entries(generatedFiles).forEach(([filePath, content]) => {
-      zip.file(filePath, content);
+      appFolder.file(filePath, content);
     });
 
     const blob = await zip.generateAsync({ type: 'blob' });
