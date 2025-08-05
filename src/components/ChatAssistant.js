@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, Bot, User, Loader2, X } from 'lucide-react';
+import { MessageCircle, Send, Bot, User, Loader2, X, ExternalLink } from 'lucide-react';
+import { searchShopifyDev, getShopifyDevDocs } from '../services/shopifyDevApi';
 
 const ChatAssistant = ({ onApplyDefaults, onExplainFeature }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
       type: 'bot',
-      content: "Hi! I'm here to help you build your Shopify app. Ask me anything about creating apps, what different options mean, or let me suggest the best choices for you. Try asking 'What's the difference between apps for store owners vs customers?' or 'Pick the best options for me'."
+      content: "Hi! I'm here to help you build your Shopify app. I can search shopify.dev for the latest documentation and best practices. Ask me anything about creating apps, what different options mean, or let me suggest the best choices for you. Try asking 'What's the difference between apps for store owners vs customers?' or 'Pick the best options for me'."
     }
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -56,55 +57,70 @@ const ChatAssistant = ({ onApplyDefaults, onExplainFeature }) => {
   const processUserMessage = async (message) => {
     const lowerMessage = message.toLowerCase();
     
-    // Check for specific questions
+    // First, try to get answer from shopify.dev
+    try {
+      const shopifyDevResponse = await searchShopifyDev(message);
+      if (shopifyDevResponse && shopifyDevResponse.relevance > 0.8) {
+        return {
+          content: shopifyDevResponse.content,
+          source: shopifyDevResponse.source,
+          url: shopifyDevResponse.url,
+          title: shopifyDevResponse.title
+        };
+      }
+    } catch (error) {
+      console.log('Shopify.dev search failed, falling back to static responses');
+    }
+    
+    // Check for specific questions (fallback to static knowledge base)
     if (lowerMessage.includes('why') && lowerMessage.includes('graphql')) {
-      return knowledgeBase.graphql.explanation;
+      return { content: knowledgeBase.graphql.explanation };
     }
     
     if (lowerMessage.includes('why') && lowerMessage.includes('polaris')) {
-      return knowledgeBase.polaris.explanation;
+      return { content: knowledgeBase.polaris.explanation };
     }
     
     if (lowerMessage.includes('why') && lowerMessage.includes('app bridge')) {
-      return knowledgeBase['app bridge'].explanation;
+      return { content: knowledgeBase['app bridge'].explanation };
     }
     
     if (lowerMessage.includes('why') && lowerMessage.includes('webhook')) {
-      return knowledgeBase.webhooks.explanation;
+      return { content: knowledgeBase.webhooks.explanation };
     }
     
     if (lowerMessage.includes('why') && lowerMessage.includes('oauth')) {
-      return knowledgeBase.oauth.explanation;
+      return { content: knowledgeBase.oauth.explanation };
     }
     
     if (lowerMessage.includes('pick default') || lowerMessage.includes('suggest') || lowerMessage.includes('recommend')) {
       const defaults = getDefaultRecommendations();
       onApplyDefaults(defaults);
-      return defaults.explanation;
+      return { content: defaults.explanation };
     }
     
     if (lowerMessage.includes('admin app') && lowerMessage.includes('storefront')) {
-      return "**Apps for Store Owners vs Apps for Customers:**\n\n**For Store Owners**:\n• Runs in the store management dashboard\n• Helps store owners run their business\n• Can access store data and settings\n• Examples: inventory tracking, order management, analytics\n\n**For Customers**:\n• Runs on the shopping website\n• Enhances the customer shopping experience\n• Can modify product pages, cart, checkout\n• Examples: product recommendations, custom checkout fields, live chat";
+      return { content: "**Apps for Store Owners vs Apps for Customers:**\n\n**For Store Owners**:\n• Runs in the store management dashboard\n• Helps store owners run their business\n• Can access store data and settings\n• Examples: inventory tracking, order management, analytics\n\n**For Customers**:\n• Runs on the shopping website\n• Enhances the customer shopping experience\n• Can modify product pages, cart, checkout\n• Examples: product recommendations, custom checkout fields, live chat" };
     }
     
     if (lowerMessage.includes('node.js') && lowerMessage.includes('remix')) {
-      return "**Technology Options:**\n\n**Fast & Popular (Node.js)**:\n• Great for beginners\n• Large community and help available\n• Good for most app types\n• Easy to learn and use\n\n**Modern & Powerful (Remix)**:\n• Best for complex apps\n• Built-in features for better performance\n• For experienced developers\n• Advanced capabilities\n\n**Mature & Reliable (Rails)**:\n• Perfect for business apps\n• Lots of built-in features\n• For complex applications\n• Proven and stable";
+      return { content: "**Technology Options:**\n\n**Fast & Popular (Node.js)**:\n• Great for beginners\n• Large community and help available\n• Good for most app types\n• Easy to learn and use\n\n**Modern & Powerful (Remix)**:\n• Best for complex apps\n• Built-in features for better performance\n• For experienced developers\n• Advanced capabilities\n\n**Mature & Reliable (Rails)**:\n• Perfect for business apps\n• Lots of built-in features\n• For complex applications\n• Proven and stable" };
     }
     
     if (lowerMessage.includes('help') || lowerMessage.includes('what can you do')) {
-      return "I can help you with:\n\n• **Explaining features**: Ask 'Why do I need Data Access?' or 'What is Professional Design?'\n• **Comparing options**: 'Apps for store owners vs customers' or 'Technology options'\n• **Picking options**: Say 'Pick the best options for me' or 'Suggest choices'\n• **General guidance**: Ask about building Shopify apps\n\nJust ask me anything about creating your app!";
+      return { content: "I can help you with:\n\n• **Explaining features**: Ask 'Why do I need Data Access?' or 'What is Professional Design?'\n• **Comparing options**: 'Apps for store owners vs customers' or 'Technology options'\n• **Picking options**: Say 'Pick the best options for me' or 'Suggest choices'\n• **General guidance**: Ask about building Shopify apps\n• **Real-time docs**: I can search shopify.dev for the latest information\n\nJust ask me anything about creating your app!" };
     }
     
     if (lowerMessage.includes('best practice') || lowerMessage.includes('recommendation')) {
-      return "**Tips for Building Great Apps:**\n\n• **Start simple**: Begin with essential features, add more later\n• **Use Professional Design**: Makes your app look polished and familiar\n• **Include Secure Access**: Required for any app that connects to stores\n• **Handle errors well**: Always provide clear, helpful messages\n• **Test thoroughly**: Try your app with different store sizes\n• **Follow Shopify guidelines**: Check the Partner Dashboard for requirements\n• **Make it user-friendly**: Keep it simple for store owners to use";
+      return { content: "**Tips for Building Great Apps:**\n\n• **Start simple**: Begin with essential features, add more later\n• **Use Professional Design**: Makes your app look polished and familiar\n• **Include Secure Access**: Required for any app that connects to stores\n• **Handle errors well**: Always provide clear, helpful messages\n• **Test thoroughly**: Try your app with different store sizes\n• **Follow Shopify guidelines**: Check the Partner Dashboard for requirements\n• **Make it user-friendly**: Keep it simple for store owners to use" };
     }
     
     if (lowerMessage.includes('getting started') || lowerMessage.includes('first app')) {
-      return "**Getting Started with Your First App:**\n\n1. **Choose For Store Owners** - Easiest to start with\n2. **Pick Fast & Popular** - Great for beginners\n3. **Include Secure Access** - Required for safety\n4. **Add Professional Design** - Makes it look great\n5. **Start with a simple idea** - Like tracking inventory or managing orders\n\nOnce you create your app, you'll need to:\n• Set up a Shopify Partner account\n• Create an app in the Partner Dashboard\n• Configure your app's settings\n• Test with a development store\n\nWould you like me to pick the best options for you?";
+      return { content: "**Getting Started with Your First App:**\n\n1. **Choose For Store Owners** - Easiest to start with\n2. **Pick Fast & Popular** - Great for beginners\n3. **Include Secure Access** - Required for safety\n4. **Add Professional Design** - Makes it look great\n5. **Start with a simple idea** - Like tracking inventory or managing orders\n\nOnce you create your app, you'll need to:\n• Set up a Shopify Partner account\n• Create an app in the Partner Dashboard\n• Configure your app's settings\n• Test with a development store\n\nWould you like me to pick the best options for you?" };
     }
     
     // Default response for unrecognized questions
-    return "I'm not sure about that specific question, but I can help you with:\n\n• Explaining app features (Data Access, Professional Design, etc.)\n• Comparing different app types and technologies\n• Suggesting the best options for your app\n• General guidance on building apps\n\nTry asking something like 'Why do I need Data Access?' or 'Pick the best options for me'!";
+    return { content: "I'm not sure about that specific question, but I can help you with:\n\n• Explaining app features (Data Access, Professional Design, etc.)\n• Comparing different app types and technologies\n• Suggesting the best options for your app\n• General guidance on building apps\n• Searching shopify.dev for the latest documentation\n\nTry asking something like 'Why do I need Data Access?' or 'Pick the best options for me'!" };
   };
 
   const handleSendMessage = async () => {
@@ -128,7 +144,10 @@ const ChatAssistant = ({ onApplyDefaults, onExplainFeature }) => {
     const botMessage = {
       id: Date.now() + 1,
       type: 'bot',
-      content: botResponse
+      content: botResponse.content || botResponse,
+      source: botResponse.source,
+      url: botResponse.url,
+      title: botResponse.title
     };
 
     setMessages(prev => [...prev, botMessage]);
@@ -162,22 +181,37 @@ const ChatAssistant = ({ onApplyDefaults, onExplainFeature }) => {
             key={message.id}
             className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div
-              className={`max-w-[80%] p-3 rounded-lg ${
-                message.type === 'user'
-                  ? 'bg-shopify-600 text-white'
-                  : 'bg-gray-100 text-gray-900'
-              }`}
-            >
-              <div className="flex items-start space-x-2">
-                {message.type === 'bot' && (
-                  <Bot className="h-4 w-4 text-shopify-600 mt-0.5 flex-shrink-0" />
-                )}
-                <div className="whitespace-pre-wrap text-sm">
-                  {message.content}
+                          <div
+                className={`max-w-[80%] p-3 rounded-lg ${
+                  message.type === 'user'
+                    ? 'bg-shopify-600 text-white'
+                    : 'bg-gray-100 text-gray-900'
+                }`}
+              >
+                <div className="flex items-start space-x-2">
+                  {message.type === 'bot' && (
+                    <Bot className="h-4 w-4 text-shopify-600 mt-0.5 flex-shrink-0" />
+                  )}
+                  <div className="flex-1">
+                    <div className="whitespace-pre-wrap text-sm">
+                      {message.content}
+                    </div>
+                    {message.source === 'shopify.dev' && message.url && (
+                      <div className="mt-2 pt-2 border-t border-gray-200">
+                        <a
+                          href={message.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-xs text-shopify-600 hover:text-shopify-700 transition-colors"
+                        >
+                          <ExternalLink className="h-3 w-3 mr-1" />
+                          View on shopify.dev
+                        </a>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
         ))}
         
@@ -230,6 +264,12 @@ const ChatAssistant = ({ onApplyDefaults, onExplainFeature }) => {
             className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded transition-colors"
           >
             First app
+          </button>
+          <button
+            onClick={() => setInputValue('GraphQL API documentation')}
+            className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded transition-colors"
+          >
+            shopify.dev
           </button>
         </div>
       </div>
