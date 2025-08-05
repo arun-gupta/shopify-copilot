@@ -1,4 +1,5 @@
 // import axios from 'axios'; // Uncomment when using actual API
+import { generateAppWithLLM, getCurrentProvider, isProviderAvailable } from './llmProvider';
 
 // const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001'; // Uncomment when using actual API
 
@@ -200,18 +201,34 @@ export function AppBridgeProvider({ children }) {
 
 export const generateApp = async (formData) => {
   try {
-    // In production, this would call the actual OpenAI API
-    // For now, we'll use a mock response
-    const mockFiles = generateMockResponse(formData);
+    // Check if we should use mock responses
+    const useMockApi = process.env.REACT_APP_USE_MOCK_API === 'true';
     
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    if (useMockApi) {
+      // Use mock response for development
+      const mockFiles = generateMockResponse(formData);
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      return {
+        success: true,
+        files: mockFiles
+      };
+    }
     
-    return {
-      success: true,
-      files: mockFiles
-    };
+    // Use real LLM provider
+    const currentProvider = getCurrentProvider();
+    
+    if (!isProviderAvailable(currentProvider)) {
+      throw new Error(`${currentProvider} is not available. Please check your configuration.`);
+    }
+    
+    console.log(`Using LLM provider: ${currentProvider}`);
+    return await generateAppWithLLM(formData, currentProvider);
+    
   } catch (error) {
+    console.error('Error generating app:', error);
     throw new Error('Failed to generate app: ' + error.message);
   }
 };

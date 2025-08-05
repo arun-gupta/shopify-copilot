@@ -55,9 +55,12 @@ A powerful web application that allows developers to generate custom Shopify app
    - `REACT_APP_OPENAI_API_KEY` - Optional, for frontend OpenAI calls
    
    **For Production:**
-   - `NODE_ENV=production` - Enables real OpenAI API calls
-   - `OPENAI_API_KEY` - Your OpenAI API key (more secure, backend-only)
-   - `REACT_APP_USE_MOCK_API=false` - Disables mock responses
+- `NODE_ENV=production` - Enables real AI API calls
+- `REACT_APP_LLM_PROVIDER=openai|ollama|mistral` - Choose your AI provider
+- `OPENAI_API_KEY` - Your OpenAI API key (for OpenAI provider)
+- `REACT_APP_MISTRAL_API_KEY` - Your Mistral API key (for Mistral provider)
+- `REACT_APP_OLLAMA_BASE_URL` - Ollama server URL (for Ollama provider)
+- `REACT_APP_USE_MOCK_API=false` - Disables mock responses
 
 4. **Start the development server**
    ```bash
@@ -79,15 +82,18 @@ The application supports two modes of operation:
 - Fast development and testing
 
 **Production Mode:**
-- Uses real OpenAI API for app generation
-- Requires `OPENAI_API_KEY` (backend-only, more secure)
+- Uses real AI API for app generation (OpenAI, Ollama, or Mistral)
+- Requires appropriate API key or Ollama installation
 - Set `NODE_ENV=production` to enable
 
 **Environment Variables:**
-- `REACT_APP_OPENAI_API_KEY` - For frontend OpenAI calls (development)
+- `REACT_APP_LLM_PROVIDER` - Choose AI provider: 'openai', 'ollama', or 'mistral'
+- `REACT_APP_OPENAI_API_KEY` - For OpenAI API calls
 - `OPENAI_API_KEY` - For backend OpenAI calls (production, more secure)
+- `REACT_APP_MISTRAL_API_KEY` - For Mistral AI API calls
+- `REACT_APP_OLLAMA_BASE_URL` - Ollama server URL (default: http://localhost:11434)
 - `REACT_APP_USE_MOCK_API` - Toggle between mock and real API
-- `NODE_ENV` - Set to 'production' for real OpenAI integration
+- `NODE_ENV` - Set to 'production' for real AI integration
 - `REACT_APP_API_BASE_URL` - Backend API URL
 
 ### Project Structure
@@ -110,6 +116,31 @@ src/
 - `npm build` - Build for production
 - `npm test` - Run tests
 - `npm eject` - Eject from Create React App
+
+## 🤖 AI Providers
+
+The app supports multiple AI providers for generating Shopify app scaffolds:
+
+### **OpenAI**
+- **Models**: GPT-4, GPT-3.5-turbo
+- **Cost**: Pay-per-use API calls
+- **Setup**: Requires OpenAI API key
+- **Best for**: Production apps, high-quality code generation
+
+### **Ollama (Local AI)**
+- **Models**: Mistral, Llama2, CodeLlama, Neural Chat
+- **Cost**: Free (runs locally)
+- **Setup**: Install Ollama and download models
+- **Best for**: Development, privacy-conscious users, offline use
+
+### **Mistral AI**
+- **Models**: Mistral Large, Medium, Small
+- **Cost**: Pay-per-use API calls
+- **Setup**: Requires Mistral API key
+- **Best for**: Cost-effective cloud AI, European data residency
+
+### **Provider Selection**
+Set `REACT_APP_LLM_PROVIDER=openai|ollama|mistral` in your `.env` file to choose your preferred provider.
 
 ## 🎯 Usage
 
