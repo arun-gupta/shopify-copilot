@@ -48,11 +48,11 @@ A powerful web application that allows developers to generate custom Shopify app
    ```bash
    cp env.example .env
    ```
-   Edit `.env` and configure your settings:
+   The `.env` file is pre-configured for development with Ollama. No additional configuration needed!
 
-   **For Ollama (Default Development Setup):**
+   **Install Ollama (if not already installed):**
    ```bash
-   # Install Ollama (if not already installed)
+   # Install Ollama
    curl -fsSL https://ollama.ai/install.sh | sh
    
    # Download a model (Mistral is recommended)
@@ -62,10 +62,10 @@ A powerful web application that allows developers to generate custom Shopify app
    ollama serve
    ```
    
-   **For Development (Default Setup):**
-- `REACT_APP_LLM_PROVIDER=ollama` - Default to local Ollama AI
-- `REACT_APP_USE_MOCK_API=true` - Uses mock responses (fallback)
-- No API keys required for Ollama
+   **Default Development Setup:**
+- Uses Ollama for local AI generation
+- Falls back to mock responses if Ollama unavailable
+- No API keys or additional configuration required
    
    
 
@@ -74,7 +74,7 @@ A powerful web application that allows developers to generate custom Shopify app
    npm start
    ```
    
-   **Note:** The app runs entirely in the browser. No backend server is required for development.
+   **That's it!** The app runs entirely in the browser with Ollama as the default AI provider.
 
 5. **Open your browser**
    Navigate to `http://localhost:3000`
@@ -88,17 +88,17 @@ The application supports two modes of operation:
 **Development Mode (Default):**
 - Uses Ollama for local AI generation
 - Falls back to mock responses if Ollama unavailable
-- No API keys required
+- No API keys or configuration required
 - Fast development and testing
 
 
 
-**Environment Variables:**
-- `REACT_APP_LLM_PROVIDER` - Choose AI provider: 'ollama' (default), 'openai', or 'mistral'
-- `REACT_APP_OLLAMA_BASE_URL` - Ollama server URL (default: http://localhost:11434)
-- `REACT_APP_USE_MOCK_API` - Toggle between mock and real API (default: true)
+**Environment Variables (Pre-configured):**
+- `REACT_APP_LLM_PROVIDER=ollama` - Uses local Ollama AI
+- `REACT_APP_OLLAMA_BASE_URL=http://localhost:11434` - Ollama server URL
+- `REACT_APP_USE_MOCK_API=true` - Falls back to mock responses
 
-**Optional (for testing other providers):**
+**Optional (for testing other AI providers):**
 - `REACT_APP_OPENAI_API_KEY` - For OpenAI API calls
 - `REACT_APP_MISTRAL_API_KEY` - For Mistral AI API calls
 
