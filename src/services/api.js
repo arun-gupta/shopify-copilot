@@ -26,7 +26,7 @@ const generateMockResponse = (formData) => {
       }
     }, null, 2),
     
-    'README.md': `# Shopify App
+                    'README.md': `# Shopify App
 
 ${description}
 
@@ -36,12 +36,66 @@ ${description}
 - Features: ${features.join(', ')}
 
 ## Setup
-1. Install dependencies: \`npm install\`
-2. Set up environment variables
-3. Run the app: \`npm start\`
+
+### 1. Install Dependencies
+\`\`\`bash
+npm install
+\`\`\`
+
+### 2. Set Up Environment Variables
+1. Copy the example environment file:
+   \`\`\`bash
+   cp .env.example .env
+   \`\`\`
+
+2. Get your Shopify API credentials:
+   - Go to [Shopify Partners](https://partners.shopify.com)
+   - Create a new app or use an existing one
+   - Navigate to **App Setup** → **Admin API integration**
+   - Copy your **API key** and **API secret key**
+
+3. Update your \`.env\` file with your credentials:
+   \`\`\`bash
+   SHOPIFY_API_KEY=your_actual_api_key_here
+   SHOPIFY_API_SECRET=your_actual_api_secret_here
+   SHOPIFY_SCOPES=read_products,write_products
+   SHOPIFY_APP_URL=https://your-app-url.com
+   \`\`\`
+
+### 3. Run the App
+\`\`\`bash
+npm start
+\`\`\`
 
 ## Development
 Run \`npm run dev\` for development with auto-reload.
+
+## Where to Find Your Shopify Credentials
+
+### Shopify Partners Dashboard
+1. **Sign up/Login**: [partners.shopify.com](https://partners.shopify.com)
+2. **Create App**: Click "Create app" → "Create app manually"
+3. **App Setup**: Go to your app → "App Setup"
+4. **Admin API**: Click "Configure" under "Admin API integration"
+5. **Copy Credentials**: 
+   - **API key** (Client ID)
+   - **API secret key** (Client Secret)
+
+### Required Scopes
+The default scopes include:
+- \`read_products\` - Read product information
+- \`write_products\` - Create/update products
+
+Add more scopes based on your app's needs:
+- \`read_orders\` - Read order information
+- \`write_orders\` - Create/update orders
+- \`read_customers\` - Read customer data
+- \`write_customers\` - Create/update customers
+
+## Next Steps
+1. Test your app with a development store
+2. Submit for review when ready
+3. Publish to the Shopify App Store
 `,
     
     '.env.example': `# Shopify App Environment Variables
