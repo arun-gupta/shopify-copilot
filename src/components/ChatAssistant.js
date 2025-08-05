@@ -60,7 +60,7 @@ const ChatAssistant = ({ onApplyDefaults, onExplainFeature, onClose }) => {
     // First, try to get answer from shopify.dev
     try {
       const shopifyDevResponse = await searchShopifyDev(message);
-      if (shopifyDevResponse && shopifyDevResponse.relevance > 0.8) {
+      if (shopifyDevResponse && shopifyDevResponse.relevance > 0.6) {
         return {
           content: shopifyDevResponse.content,
           source: shopifyDevResponse.source,
