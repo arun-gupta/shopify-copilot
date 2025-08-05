@@ -73,23 +73,23 @@ const ChatAssistant = ({ onApplyDefaults, onExplainFeature }) => {
     }
     
     // Check for specific questions (fallback to static knowledge base)
-    if (lowerMessage.includes('why') && lowerMessage.includes('graphql')) {
+    if (lowerMessage.includes('why') && (lowerMessage.includes('graphql') || lowerMessage.includes('data access'))) {
       return { content: knowledgeBase.graphql.explanation };
     }
     
-    if (lowerMessage.includes('why') && lowerMessage.includes('polaris')) {
+    if (lowerMessage.includes('why') && (lowerMessage.includes('polaris') || lowerMessage.includes('professional design'))) {
       return { content: knowledgeBase.polaris.explanation };
     }
     
-    if (lowerMessage.includes('why') && lowerMessage.includes('app bridge')) {
+    if (lowerMessage.includes('why') && (lowerMessage.includes('app bridge') || lowerMessage.includes('seamless integration'))) {
       return { content: knowledgeBase['app bridge'].explanation };
     }
     
-    if (lowerMessage.includes('why') && lowerMessage.includes('webhook')) {
+    if (lowerMessage.includes('why') && (lowerMessage.includes('webhook') || lowerMessage.includes('real-time updates'))) {
       return { content: knowledgeBase.webhooks.explanation };
     }
     
-    if (lowerMessage.includes('why') && lowerMessage.includes('oauth')) {
+    if (lowerMessage.includes('why') && (lowerMessage.includes('oauth') || lowerMessage.includes('secure access'))) {
       return { content: knowledgeBase.oauth.explanation };
     }
     
