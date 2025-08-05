@@ -1,8 +1,8 @@
-# Shopify App Builder Copilot - Chat Assistant Demo
+# ShopifyGPT - Chat Assistant Demo
 
 ## 🎯 New Interactive Chat Features
 
-The Shopify App Builder Copilot now includes an intelligent chat assistant that helps users understand features and make informed decisions about their app development.
+ShopifyGPT includes an intelligent chat assistant that helps users understand features and make informed decisions about their app development.
 
 ## 🚀 How to Use the Chat Assistant
 

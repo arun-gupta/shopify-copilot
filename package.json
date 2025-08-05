@@ -1,7 +1,7 @@
 {
-  "name": "shopify-app-builder-copilot",
+  "name": "shopify-gpt",
   "version": "1.0.0",
-  "description": "A tool for generating custom Shopify app scaffolds using natural language and form inputs",
+  "description": "ShopifyGPT - Generate custom Shopify app scaffolds using natural language and AI",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",

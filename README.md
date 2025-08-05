@@ -1,6 +1,6 @@
-# Shopify App Builder Copilot
+# ShopifyGPT
 
-A powerful web application that allows developers to generate custom Shopify app scaffolds using natural language and form inputs. Built with React, Tailwind CSS, and powered by GPT-4.
+A powerful web application that allows developers to generate custom Shopify app scaffolds using natural language and form inputs. Built with React, Tailwind CSS, and powered by multiple AI providers including GPT-4, Ollama, and Mistral.
 
 ## 🚀 Features
 

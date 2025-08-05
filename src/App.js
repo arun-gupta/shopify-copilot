@@ -64,9 +64,9 @@ function App() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
               <Code className="h-8 w-8 text-shopify-600" />
-              <h1 className="text-xl font-bold text-gray-900">
-                Shopify App Builder Copilot
-              </h1>
+                                        <h1 className="text-xl font-bold text-gray-900">
+                            ShopifyGPT
+                          </h1>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">Powered by GPT-4</span>
