@@ -48,7 +48,16 @@ A powerful web application that allows developers to generate custom Shopify app
    ```bash
    cp env.example .env
    ```
-   Edit `.env` and add your OpenAI API key (optional for development)
+   Edit `.env` and configure your settings:
+   
+   **For Development (Mock Mode):**
+   - `REACT_APP_USE_MOCK_API=true` - Uses mock responses
+   - `REACT_APP_OPENAI_API_KEY` - Optional, for frontend OpenAI calls
+   
+   **For Production:**
+   - `NODE_ENV=production` - Enables real OpenAI API calls
+   - `OPENAI_API_KEY` - Your OpenAI API key (more secure, backend-only)
+   - `REACT_APP_USE_MOCK_API=false` - Disables mock responses
 
 4. **Start the development server**
    ```bash
@@ -59,6 +68,27 @@ A powerful web application that allows developers to generate custom Shopify app
    Navigate to `http://localhost:3000`
 
 ## 🔧 Development
+
+### Environment Variables
+
+The application supports two modes of operation:
+
+**Development Mode (Default):**
+- Uses mock responses for app generation
+- No OpenAI API key required
+- Fast development and testing
+
+**Production Mode:**
+- Uses real OpenAI API for app generation
+- Requires `OPENAI_API_KEY` (backend-only, more secure)
+- Set `NODE_ENV=production` to enable
+
+**Environment Variables:**
+- `REACT_APP_OPENAI_API_KEY` - For frontend OpenAI calls (development)
+- `OPENAI_API_KEY` - For backend OpenAI calls (production, more secure)
+- `REACT_APP_USE_MOCK_API` - Toggle between mock and real API
+- `NODE_ENV` - Set to 'production' for real OpenAI integration
+- `REACT_APP_API_BASE_URL` - Backend API URL
 
 ### Project Structure
 ```

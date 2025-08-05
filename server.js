@@ -17,8 +17,54 @@ app.post('/api/generate', async (req, res) => {
   try {
     const { appType, framework, features, description } = req.body;
     
-    // Mock response for development
-    // In production, this would call OpenAI API
+    // Check if we should use OpenAI API (production mode)
+    const useOpenAI = process.env.NODE_ENV === 'production' && process.env.OPENAI_API_KEY;
+    
+    if (useOpenAI) {
+      // Production: Use OpenAI API
+      try {
+        const OpenAI = require('openai');
+        const openai = new OpenAI({
+          apiKey: process.env.OPENAI_API_KEY,
+        });
+        
+        const completion = await openai.chat.completions.create({
+          model: 'gpt-4',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are a Shopify app development expert. Generate complete app scaffolds based on user requirements. Return a JSON object with a "files" property containing file paths as keys and file contents as values.'
+            },
+            {
+              role: 'user',
+              content: `Generate a Shopify app with these requirements:
+                - App Type: ${appType}
+                - Framework: ${framework}
+                - Features: ${features.join(', ')}
+                - Description: ${description}
+                
+                Return a JSON object with a 'files' property containing file paths as keys and file contents as values.`
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 4000
+        });
+        
+        const content = completion.choices[0].message.content;
+        const files = JSON.parse(content);
+        
+        res.json({
+          success: true,
+          files: files.files
+        });
+        return;
+      } catch (openaiError) {
+        console.error('OpenAI API error:', openaiError);
+        // Fall back to mock response if OpenAI fails
+      }
+    }
+    
+    // Mock response for development or fallback
     const mockFiles = {
       'package.json': JSON.stringify({
         name: "shopify-app",

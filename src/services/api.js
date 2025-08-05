@@ -220,6 +220,7 @@ export const generateApp = async (formData) => {
 /*
 export const generateAppWithOpenAI = async (formData) => {
   try {
+    // Use backend API for production (more secure)
     const response = await axios.post('/api/generate', {
       appType: formData.appType,
       framework: formData.framework,
@@ -227,12 +228,54 @@ export const generateAppWithOpenAI = async (formData) => {
       description: formData.description
     }, {
       headers: {
-        'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         'Content-Type': 'application/json'
       }
     });
     
     return response.data;
+  } catch (error) {
+    throw new Error('Failed to generate app: ' + error.message);
+  }
+};
+
+// Development OpenAI API call (frontend direct access)
+export const generateAppWithOpenAIDev = async (formData) => {
+  try {
+    const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+      model: 'gpt-4',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a Shopify app development expert. Generate complete app scaffolds based on user requirements.'
+        },
+        {
+          role: 'user',
+          content: `Generate a Shopify app with these requirements:
+            - App Type: ${formData.appType}
+            - Framework: ${formData.framework}
+            - Features: ${formData.features.join(', ')}
+            - Description: ${formData.description}
+            
+            Return a JSON object with a 'files' property containing file paths as keys and file contents as values.`
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 4000
+    }, {
+      headers: {
+        'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    // Parse the response and extract files
+    const content = response.data.choices[0].message.content;
+    const files = JSON.parse(content);
+    
+    return {
+      success: true,
+      files: files.files
+    };
   } catch (error) {
     throw new Error('Failed to generate app: ' + error.message);
   }
