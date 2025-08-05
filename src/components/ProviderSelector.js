@@ -3,7 +3,7 @@ import { getAvailableProviders, getProviderConfig, getProviderStatus, isProvider
 import { Settings, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
 const ProviderSelector = ({ onProviderChange }) => {
-  const [selectedProvider, setSelectedProvider] = useState(process.env.REACT_APP_LLM_PROVIDER || 'openai');
+  const [selectedProvider, setSelectedProvider] = useState(process.env.REACT_APP_LLM_PROVIDER || 'ollama');
   const [providerStatus, setProviderStatus] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 

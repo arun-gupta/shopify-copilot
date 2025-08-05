@@ -31,7 +31,7 @@ const PROVIDER_CONFIGS = {
 
 // Get the current provider from environment
 export const getCurrentProvider = () => {
-  return process.env.REACT_APP_LLM_PROVIDER || LLM_PROVIDERS.OPENAI;
+  return process.env.REACT_APP_LLM_PROVIDER || LLM_PROVIDERS.OLLAMA;
 };
 
 // Get provider configuration

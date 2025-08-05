@@ -49,10 +49,23 @@ A powerful web application that allows developers to generate custom Shopify app
    cp env.example .env
    ```
    Edit `.env` and configure your settings:
+
+   **For Ollama (Default Development Setup):**
+   ```bash
+   # Install Ollama (if not already installed)
+   curl -fsSL https://ollama.ai/install.sh | sh
+   
+   # Download a model (Mistral is recommended)
+   ollama pull mistral
+   
+   # Start Ollama server
+   ollama serve
+   ```
    
    **For Development (Mock Mode):**
-   - `REACT_APP_USE_MOCK_API=true` - Uses mock responses
-   - `REACT_APP_OPENAI_API_KEY` - Optional, for frontend OpenAI calls
+- `REACT_APP_USE_MOCK_API=true` - Uses mock responses
+- `REACT_APP_LLM_PROVIDER=ollama` - Default to local Ollama AI
+- `REACT_APP_OPENAI_API_KEY` - Optional, for OpenAI calls
    
    **For Production:**
 - `NODE_ENV=production` - Enables real AI API calls
@@ -132,6 +145,7 @@ The app supports multiple AI providers for generating Shopify app scaffolds:
 - **Cost**: Free (runs locally)
 - **Setup**: Install Ollama and download models
 - **Best for**: Development, privacy-conscious users, offline use
+- **Default**: Set as default provider for development
 
 ### **Mistral AI**
 - **Models**: Mistral Large, Medium, Small
@@ -140,7 +154,7 @@ The app supports multiple AI providers for generating Shopify app scaffolds:
 - **Best for**: Cost-effective cloud AI, European data residency
 
 ### **Provider Selection**
-Set `REACT_APP_LLM_PROVIDER=openai|ollama|mistral` in your `.env` file to choose your preferred provider.
+Set `REACT_APP_LLM_PROVIDER=openai|ollama|mistral` in your `.env` file to choose your preferred provider. **Ollama is the default for development.**
 
 ## 🎯 Usage
 
