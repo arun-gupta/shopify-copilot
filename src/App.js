@@ -148,16 +148,17 @@ function App() {
         )}
       </div>
 
-      {/* Chat Assistant */}
-      {showChat && (
-        <ChatAssistant 
-          onApplyDefaults={handleApplyDefaults}
-          onExplainFeature={(feature) => {
-            // Handle feature explanations if needed
-            console.log('Explaining feature:', feature);
-          }}
-        />
-      )}
+                        {/* Chat Assistant */}
+                  {showChat && (
+                    <ChatAssistant
+                      onApplyDefaults={handleApplyDefaults}
+                      onExplainFeature={(feature) => {
+                        // Handle feature explanations if needed
+                        console.log('Explaining feature:', feature);
+                      }}
+                      onClose={() => setShowChat(false)}
+                    />
+                  )}
 
       {/* Chat Toggle Button */}
       <button

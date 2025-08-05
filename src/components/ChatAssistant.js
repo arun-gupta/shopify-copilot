@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, Bot, User, Loader2, X, ExternalLink } from 'lucide-react';
 import { searchShopifyDev, getShopifyDevDocs } from '../services/shopifyDevApi';
 
-const ChatAssistant = ({ onApplyDefaults, onExplainFeature }) => {
+const ChatAssistant = ({ onApplyDefaults, onExplainFeature, onClose }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -169,7 +169,10 @@ const ChatAssistant = ({ onApplyDefaults, onExplainFeature }) => {
           <Bot className="h-5 w-5 text-shopify-600" />
           <h3 className="font-semibold text-gray-900">App Assistant</h3>
         </div>
-        <button className="text-gray-400 hover:text-gray-600">
+        <button 
+          onClick={onClose}
+          className="text-gray-400 hover:text-gray-600 transition-colors"
+        >
           <X className="h-4 w-4" />
         </button>
       </div>
