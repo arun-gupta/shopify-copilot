@@ -196,6 +196,37 @@ const ChatAssistant = ({ onApplyDefaults, onExplainFeature }) => {
                     <div className="whitespace-pre-wrap text-sm">
                       {message.content}
                     </div>
+                    {message.content.includes('Would you like me to pick the best options for you?') && (
+                      <div className="mt-3 flex space-x-2">
+                        <button
+                          onClick={() => {
+                            const defaults = getDefaultRecommendations();
+                            onApplyDefaults(defaults);
+                            setInputValue('');
+                            const userMessage = {
+                              id: Date.now(),
+                              type: 'user',
+                              content: 'Yes, please pick the best options for me.'
+                            };
+                            const botMessage = {
+                              id: Date.now() + 1,
+                              type: 'bot',
+                              content: defaults.explanation
+                            };
+                            setMessages(prev => [...prev, userMessage, botMessage]);
+                          }}
+                          className="bg-shopify-600 hover:bg-shopify-700 text-white px-3 py-1 rounded text-sm transition-colors"
+                        >
+                          Yes
+                        </button>
+                        <button
+                          onClick={() => setInputValue('No, I want to choose myself')}
+                          className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm transition-colors"
+                        >
+                          No
+                        </button>
+                      </div>
+                    )}
                     {message.source === 'shopify.dev' && message.url && (
                       <div className="mt-2 pt-2 border-t border-gray-200">
                         <a
