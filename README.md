@@ -62,12 +62,12 @@ A powerful web application that allows developers to generate custom Shopify app
    ollama serve
    ```
    
-   **For Development (Mock Mode):**
-- `REACT_APP_USE_MOCK_API=true` - Uses mock responses
+   **For Development (Default Setup):**
 - `REACT_APP_LLM_PROVIDER=ollama` - Default to local Ollama AI
-- `REACT_APP_OPENAI_API_KEY` - Optional, for OpenAI calls
+- `REACT_APP_USE_MOCK_API=true` - Uses mock responses (fallback)
+- No API keys required for Ollama
    
-   **For Production:**
+   **For Production (if needed):**
 - `NODE_ENV=production` - Enables real AI API calls
 - `REACT_APP_LLM_PROVIDER=openai|ollama|mistral` - Choose your AI provider
 - `OPENAI_API_KEY` - Your OpenAI API key (for OpenAI provider)
@@ -79,6 +79,8 @@ A powerful web application that allows developers to generate custom Shopify app
    ```bash
    npm start
    ```
+   
+   **Note:** The app runs entirely in the browser. No backend server is required for development.
 
 5. **Open your browser**
    Navigate to `http://localhost:3000`
@@ -100,14 +102,15 @@ The application supports two modes of operation:
 - Set `NODE_ENV=production` to enable
 
 **Environment Variables:**
-- `REACT_APP_LLM_PROVIDER` - Choose AI provider: 'openai', 'ollama', or 'mistral'
-- `REACT_APP_OPENAI_API_KEY` - For OpenAI API calls
-- `OPENAI_API_KEY` - For backend OpenAI calls (production, more secure)
-- `REACT_APP_MISTRAL_API_KEY` - For Mistral AI API calls
+- `REACT_APP_LLM_PROVIDER` - Choose AI provider: 'ollama' (default), 'openai', or 'mistral'
 - `REACT_APP_OLLAMA_BASE_URL` - Ollama server URL (default: http://localhost:11434)
 - `REACT_APP_USE_MOCK_API` - Toggle between mock and real API
-- `NODE_ENV` - Set to 'production' for real AI integration
+- `NODE_ENV` - Set to 'development' for mock API, 'production' for real AI
 - `REACT_APP_API_BASE_URL` - Backend API URL
+
+**Optional (for testing other providers):**
+- `REACT_APP_OPENAI_API_KEY` - For OpenAI API calls
+- `REACT_APP_MISTRAL_API_KEY` - For Mistral AI API calls
 
 ### Project Structure
 ```
@@ -125,7 +128,7 @@ src/
 
 ### Available Scripts
 
-- `npm start` - Start development server
+- `npm start` - Start development server (frontend only)
 - `npm build` - Build for production
 - `npm test` - Run tests
 - `npm eject` - Eject from Create React App
