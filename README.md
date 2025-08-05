@@ -67,13 +67,7 @@ A powerful web application that allows developers to generate custom Shopify app
 - `REACT_APP_USE_MOCK_API=true` - Uses mock responses (fallback)
 - No API keys required for Ollama
    
-   **For Production (if needed):**
-- `NODE_ENV=production` - Enables real AI API calls
-- `REACT_APP_LLM_PROVIDER=openai|ollama|mistral` - Choose your AI provider
-- `OPENAI_API_KEY` - Your OpenAI API key (for OpenAI provider)
-- `REACT_APP_MISTRAL_API_KEY` - Your Mistral API key (for Mistral provider)
-- `REACT_APP_OLLAMA_BASE_URL` - Ollama server URL (for Ollama provider)
-- `REACT_APP_USE_MOCK_API=false` - Disables mock responses
+   
 
 4. **Start the development server**
    ```bash
@@ -92,21 +86,17 @@ A powerful web application that allows developers to generate custom Shopify app
 The application supports two modes of operation:
 
 **Development Mode (Default):**
-- Uses mock responses for app generation
-- No OpenAI API key required
+- Uses Ollama for local AI generation
+- Falls back to mock responses if Ollama unavailable
+- No API keys required
 - Fast development and testing
 
-**Production Mode:**
-- Uses real AI API for app generation (OpenAI, Ollama, or Mistral)
-- Requires appropriate API key or Ollama installation
-- Set `NODE_ENV=production` to enable
+
 
 **Environment Variables:**
 - `REACT_APP_LLM_PROVIDER` - Choose AI provider: 'ollama' (default), 'openai', or 'mistral'
 - `REACT_APP_OLLAMA_BASE_URL` - Ollama server URL (default: http://localhost:11434)
-- `REACT_APP_USE_MOCK_API` - Toggle between mock and real API
-- `NODE_ENV` - Set to 'development' for mock API, 'production' for real AI
-- `REACT_APP_API_BASE_URL` - Backend API URL
+- `REACT_APP_USE_MOCK_API` - Toggle between mock and real API (default: true)
 
 **Optional (for testing other providers):**
 - `REACT_APP_OPENAI_API_KEY` - For OpenAI API calls
