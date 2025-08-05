@@ -117,9 +117,30 @@ const AppForm = ({ onGenerate, isGenerating, error, onApplyDefaults }) => {
 
         {/* Features */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            What capabilities do you need?
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-gray-700">
+              What capabilities do you need?
+            </label>
+            <button
+              type="button"
+              onClick={() => {
+                const defaults = {
+                  appType: 'Admin App',
+                  framework: 'Node.js',
+                  features: ['OAuth', 'Polaris']
+                };
+                setFormData(prev => ({
+                  ...prev,
+                  appType: defaults.appType,
+                  framework: defaults.framework,
+                  features: defaults.features
+                }));
+              }}
+              className="text-sm text-shopify-600 hover:text-shopify-700 font-medium transition-colors"
+            >
+              Pick defaults
+            </button>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {availableFeatures.map(feature => (
               <label key={feature.value} className="flex items-center space-x-3 cursor-pointer">
